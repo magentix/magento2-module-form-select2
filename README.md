@@ -99,7 +99,7 @@ class ProductTest implements ModifierInterface
             'model' => 'product',
         ];
 
-        $meta['product-details']['children']['product_test']['arguments']['data']['config'] = $config;
+        $meta['product-details']['children'][$attributeCode]['arguments']['data']['config'] = $config;
 
         return $meta;
     }
