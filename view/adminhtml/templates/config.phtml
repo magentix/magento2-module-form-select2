@@ -1,0 +1,8 @@
+<?php
+
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+
+$scriptString = 'var FORM_SELECT_SEARCH_URL = \'' . /* @noEscape */ $block->getUrl('formselect2/ajax/search') . '\';';
+
+echo /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false);

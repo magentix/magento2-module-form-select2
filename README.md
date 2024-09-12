@@ -2,7 +2,7 @@
 
 This is a fork of [Magento-2-Module-Experius-Form-Select2](https://github.com/experius/Magento-2-Module-Experius-Form-Select2)
 
-The module allows you to quickly search for a product or a customer in a form.
+The module allows you to quickly search for a product or a customer (or any custom entity) in a form field.
 
 ![Form product selector](screenshot.png)
 
@@ -33,9 +33,8 @@ composer require magentix/magento2-module-form-select2-demo
             <item name="elementTmpl" xsi:type="string">Magentix_FormSelect2/form/element/select2</item>
             <item name="component" xsi:type="string">Magentix_FormSelect2/js/form/element/select2</item>
             <item name="select2" xsi:type="array">
-                <item name="frontName" xsi:type="string">route_front_name</item> <!-- the frontName in etc/adminhtml/routes.xml -->
                 <item name="minimumInputLength" xsi:type="string">3</item>
-                <item name="model" xsi:type="string">product</item> <!-- product or customer -->
+                <item name="type" xsi:type="string">formSelectSearchProduct</item> <!-- formSelectSearchProduct, formSelectSearchCustomer or custom -->
             </item>
         </item>
     </argument>
@@ -94,9 +93,8 @@ class ProductTest implements ModifierInterface
         $config['elementTmpl'] = 'Magentix_FormSelect2/form/element/select2';
         $config['component'] = 'Magentix_FormSelect2/js/form/element/select2';
         $config['select2'] = [
-            'frontName' => 'catalog',
             'minimumInputLength' => 3,
-            'model' => 'product',
+            'type' => 'formSelectSearchProduct', // formSelectSearchProduct, formSelectSearchCustomer or custom
         ];
 
         $meta['product-details']['children'][$attributeCode]['arguments']['data']['config'] = $config;

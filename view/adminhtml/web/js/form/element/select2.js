@@ -12,11 +12,9 @@ define([
             let options = ko.unwrap(valueAccessor());
 
             if (options) {
-                let baseUrl = window.BASE_URL.split(options.frontName)[0];
-
                 let ajaxOptions = {
                     ajax: {
-                        url: baseUrl + 'formselect2/ajax/search',
+                        url: window.FORM_SELECT_SEARCH_URL,
                         dataType: 'json',
                         delay: 250,
                         type: 'POST',
@@ -24,8 +22,7 @@ define([
                             return {
                                 q: params.term,
                                 page: params.page,
-                                model: options.model,
-                                form_key: window.FORM_KEY
+                                type: options.type
                             };
                         },
                         processResults: function (data, params) {
@@ -73,14 +70,12 @@ define([
         getCurrentValue: function (value) {
             if (value) {
                 let self = this;
-                let baseUrl = window.BASE_URL.split(this.select2().frontName)[0];
 
                 $.post(
-                    baseUrl + 'formselect2/ajax/search',
+                    window.FORM_SELECT_SEARCH_URL,
                     {
                         id: value,
-                        form_key: window.FORM_KEY,
-                        model: this.select2().model
+                        type: this.select2().type
                     },
                     function (data) {
                         self.addCurrentValueToOptions(data.items, value);

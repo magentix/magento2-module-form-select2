@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="formSelectSearchProduct" type="Magentix\FormSelect2\Model\Search">
+        <arguments>
+            <argument name="searchFields" xsi:type="array">
+                <item name="name" xsi:type="string">name</item>
+                <item name="sku" xsi:type="string">sku</item>
+            </argument>
+            <argument name="modelClass" xsi:type="object">Magento\Catalog\Model\Product</argument>
+            <argument name="modelCollectionClass" xsi:type="object">Magento\Catalog\Model\ResourceModel\Product\Collection</argument>
+            <argument name="modelType" xsi:type="string">eav</argument>
+            <argument name="modelKey" xsi:type="string">entity_id</argument>
+            <argument name="sortBy" xsi:type="string">name</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="formSelectSearchCustomer" type="Magentix\FormSelect2\Model\Search">
+        <arguments>
+            <argument name="searchFields" xsi:type="array">
+                <item name="email" xsi:type="string">email</item>
+            </argument>
+            <argument name="modelClass" xsi:type="object">Magento\Customer\Model\Customer</argument>
+            <argument name="modelCollectionClass" xsi:type="object">Magento\Customer\Model\ResourceModel\Customer\Collection</argument>
+            <argument name="modelType" xsi:type="string">eav</argument>
+            <argument name="modelKey" xsi:type="string">entity_id</argument>
+            <argument name="sortBy" xsi:type="string">email</argument>
+        </arguments>
+    </virtualType>
+</config>

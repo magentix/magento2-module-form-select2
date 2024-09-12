@@ -13,18 +13,11 @@ use Magento\Framework\View\Result\PageFactory;
 
 class Search extends Action
 {
-    protected PageFactory $resultPageFactory;
-
-    protected Json $jsonSerializer;
-
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory,
-        Json $jsonSerializer
+        protected PageFactory $resultPageFactory,
+        protected Json $jsonSerializer
     ) {
-        $this->resultPageFactory = $resultPageFactory;
-        $this->jsonSerializer = $jsonSerializer;
-
         parent::__construct($context);
     }
 
@@ -34,10 +27,13 @@ class Search extends Action
             $id = $this->getRequest()->getParam('id');
             $query = $this->getRequest()->getParam('q');
             $page = $this->getRequest()->getParam('page', 1);
+            $type = $this->getRequest()->getParam('type');
 
-            $search = $this->_objectManager->create(
-                'Magentix\\FormSelect2\\Model\\Search\\' . ucfirst(strtolower($this->getRequest()->getParam('model', '')))
-            );
+            if (!$type) {
+                throw new Exception('Type is empty');
+            }
+
+            $search = $this->_objectManager->create($type);
 
             $items = [];
 

@@ -8,26 +8,17 @@ use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\AbstractModel;
-use Magento\Framework\ObjectManagerInterface;
 
-abstract class Search
+class Search
 {
-    protected ObjectManagerInterface $objectManager;
-
     public function __construct(
-        ObjectManagerInterface $objectManager,
+        protected array $searchFields,
+        protected AbstractModel $modelClass,
+        protected AbstractCollection $modelCollectionClass,
+        protected string $modelType,
+        protected string $modelKey,
+        protected ?string $sortBy = null
     ) {
-        $this->objectManager = $objectManager;
-    }
-
-    private function getModel(): AbstractModel
-    {
-        return $this->objectManager->create($this->modelClass);
-    }
-
-    public function getCollectionModel(): AbstractCollection
-    {
-        return $this->objectManager->create($this->modelCollectionClass);
     }
 
     /**
@@ -35,13 +26,12 @@ abstract class Search
      */
     public function getList(string $query, int $page): array
     {
-        $collection = $this->getCollectionModel();
-        $searchFields = $this->searchFields;
+        $collection = $this->modelCollectionClass;
 
         $conditions = [];
         $eavFilters = [];
 
-        foreach ($searchFields as $searchField) {
+        foreach ($this->searchFields as $searchField) {
             $conditions[] = ['like' => '%' . $query . '%'];
             $eavFilters[] = ['attribute' => $searchField, 'like'=>'%' . $query . '%'];
         }
@@ -49,7 +39,7 @@ abstract class Search
         if ($this->modelType === 'eav') {
             $collection->addAttributeToFilter($eavFilters, null, 'left');
         } else {
-            $collection->addFieldToFilter($searchFields, [$conditions]);
+            $collection->addFieldToFilter($this->searchFields, [$conditions]);
         }
 
         if ($page) {
@@ -57,7 +47,7 @@ abstract class Search
             $collection->setCurPage($page);
         }
 
-        if ($this->sortBy){
+        if ($this->sortBy) {
             $collection->setOrder($this->sortBy, 'ASC');
         }
 
@@ -73,19 +63,19 @@ abstract class Search
 
     public function get(string $key): array
     {
-        $model = $this->getModel()->load($key, $this->modelKey);
+        $model = $this->modelClass->load($key, $this->modelKey);
 
         $items[] = ['id' => $model->getData($this->modelKey), 'text' => $this->getItemText($model)];
 
         return $items;
     }
 
-    protected function getItemText(DataObject $item): string
+    public function getItemText(DataObject $item): string
     {
         $fields = $this->searchFields;
         $text = [];
 
-        foreach($fields as $field){
+        foreach($fields as $field) {
             $text[] = $item->getData($field);
         }
 

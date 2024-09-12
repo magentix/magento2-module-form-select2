@@ -1,7 +1,10 @@
 {
   "name": "magentix/magento2-module-form-select2",
   "require": {
-    "php": "^8"
+    "php": "^8",
+    "magento/framework": "*",
+    "magento/module-backend": "*",
+    "magento/module-eav": "*"
   },
   "type": "magento2-module",
   "autoload": {
