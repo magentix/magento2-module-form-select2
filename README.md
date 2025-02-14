@@ -11,7 +11,7 @@ The module allows you to quickly search for a product or a customer (or any cust
 # Install
 
 ```
-composer require magentix/magento2-module-form-select2-demo
+composer require magentix/magento2-module-form-select2
 ```
 
 # Usage
